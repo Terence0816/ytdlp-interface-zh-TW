@@ -73,14 +73,46 @@ build_zh_tw.bat Release x64 v143
 
 依照 MIT License 規定，散佈或修改本專案時，應一併保留原始版權聲明與授權條款。完整內容請參考 [LICENSE](LICENSE)。
 
+如果你之後想把這個 GitHub fork 轉成完全獨立的倉庫，可先看這份：[安全脫離 fork network 前的確認清單](docs/leave-fork-network-checklist.md)
+
 ## 畫面預覽
 
-![settings](https://github.com/user-attachments/assets/2bf18ef3-e3d7-4e4c-9641-01419e21a6aa)
+主畫面
+
+![主畫面](docs/screenshots/main-window.png)
 
 ---
 
-![queue](https://github.com/user-attachments/assets/215bb101-fa44-4817-8fcb-2fc0e32c883e)
+下載器設定
+
+![下載器設定](docs/screenshots/settings-ytdlp.png)
 
 ---
 
-![output](https://github.com/user-attachments/assets/95fd8a51-9c1f-47c1-89fb-b07d6d4dcb60)
+SponsorBlock 設定
+
+![SponsorBlock 設定](docs/screenshots/settings-sponsorblock.png)
+
+---
+
+佇列設定
+
+![佇列設定](docs/screenshots/settings-queue.png)
+
+---
+
+介面設定
+
+![介面設定](docs/screenshots/settings-interface.png)
+
+---
+
+更新器設定
+
+![更新器設定](docs/screenshots/settings-updater.png)
+
+---
+
+關於頁面
+
+![關於頁面](docs/screenshots/settings-about.png)
