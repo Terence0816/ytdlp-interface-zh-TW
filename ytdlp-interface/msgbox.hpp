@@ -124,7 +124,7 @@ namespace widgets
 			if(buttons == MB_OK)
 				btn3.focus();
 
-			l_msg.caption(msg.str());
+			l_msg.caption(i18n::tr(msg.str()));
 			auto h_top {std::max(l_msg.measure(dpi_scale(477)).height, (unsigned)dpi_scale(40))};
 			center(dpi_scale(580), dpi_scale(40) + dpi_scale(74) + h_top, false);
 			bring_top(true);

@@ -327,32 +327,26 @@ private:
 
 	std::unordered_map<std::string, std::pair<std::string, std::string>> sblock_infos
 	{
-		{"all", {"All", "Select this to indicate all categories."}},
-		{"sponsor", {"Sponsor", "Segments promoting a product or service not directly related to the creator."}},
+		{"all", {"全部", "選取此項表示包含所有分類。"}},
+		{"sponsor", {"贊助內容", "推廣與創作者本身沒有直接關係的產品或服務片段。"}},
 
-		{"intro", {"Intermission/Intro Animation", "Segments typically found at the start of a video that include an animation, "
-		          "still frame or clip which are also seen in other videos by the same creator. This can include livestream pauses "
-		          "with no content\n(looping animations or chat windows) and Copyright / Fair Use disclaimers."}},
+		{"intro", {"開場動畫／中場過場", "通常出現在影片開頭，包含動畫、定格畫面或創作者其他影片也會出現的片段。這也可能包含沒有實際內容的直播暫停畫面\n（例如循環動畫或聊天室畫面），以及版權／合理使用聲明。"}},
 
-		{"outro", {"Endcards/Credits (Outro)", "Typically near or at the end of the video when the credits pop up and/or endcards are shown."}},
+		{"outro", {"結尾卡／片尾名單", "通常出現在影片尾聲，顯示片尾名單與／或結尾卡的片段。"}},
 
-		{"selfpromo", {"Unpaid/Self Promotion", "Segments promoting a product or service that is directly related to the creator themselves.\n"
-		              "This usually includes merchandise or promotion of monetized platforms."}},
+		{"selfpromo", {"非付費／自我宣傳", "推廣與創作者本人直接相關的產品或服務片段。\n通常包括周邊商品或其他可營利平台的宣傳。"}},
 
-		{"preview", {"Preview/Recap", "Collection of clips that show what is coming up in in this video or other videos in a series."}},
+		{"preview", {"預告／回顧", "用來展示本影片或系列其他影片即將出現內容的剪輯片段。"}},
 
-		{"hook", {"Hook/Greetings", "Narrated trailers for the upcoming video, greetings and goodbyes. Does not include conclusions with information."}},
+		{"hook", {"開場鉤子／問候", "對即將開始內容的口播預告、開場招呼與結尾道別。不包含帶有資訊性的總結內容。"}},
 
-		{"filler", {"Filler Tangent/Jokes", "Tangential scenes added only for filler or humor, that are not required to understand the main "
-		           "content of the video. This can also include: Timelapses / B-Roll, Fake Sponsors and slow-motion clips that do not provide "
-		           "any context or are used as replays or B-roll."}},
+		{"filler", {"填充閒聊／玩笑", "僅用於填充篇幅或製造幽默、對理解影片主內容並非必要的片段。也可能包括縮時畫面、B-roll、假贊助內容，以及沒有提供額外資訊的慢動作或重播片段。"}},
 
-		{"interaction", {"Interaction Reminder (Subscribe)", "Explicit reminders to like, subscribe or interact with them on any paid or "
-			            "free platform(s)\n(e.g. click on a video)."}},
+		{"interaction", {"互動提醒（訂閱）", "明確提醒觀眾按讚、訂閱，或在任何付費／免費平台上與創作者互動的片段\n（例如點擊影片）。"}},
 
-		{"music_offtopic", {"Music: Non-Music Section", "Section devoid of music in videos which feature music as the primary content."}},
-		{"poi_highlight", {"Highlight", "A point of interest in the video, possibly the most important part of the video."}},
-		{"chapter", {"Chapter", "Chapters designated by SponsorBlock (presumably in a video that doesn't have chapters otherwise)."}}
+		{"music_offtopic", {"音樂影片中的非音樂片段", "在以音樂為主要內容的影片中，不含音樂的片段。"}},
+		{"poi_highlight", {"重點片段", "影片中的重點時刻，可能是整支影片最重要的部分。"}},
+		{"chapter", {"章節", "由 SponsorBlock 標記出的章節（通常用於原影片本身沒有章節的情況）。"}}
 	};
 
 	public:
@@ -371,7 +365,10 @@ private:
 				if(!el.first.empty())
 				{
 					cat++;
-					lbq.append(el.first).inline_factory(1, nana::pat::make_factory<inline_widget>());
+					auto new_cat {lbq.append(el.first)};
+					new_cat.inline_factory(1, nana::pat::make_factory<inline_widget>());
+					new_cat.inline_factory(2, nana::pat::make_factory<translated_inline_widget>());
+					new_cat.inline_factory(3, nana::pat::make_factory<translated_inline_widget>());
 				}
 				for(auto &url : el.second)
 					add_url(nana::to_wstring(url), false, false, cat);

@@ -15,13 +15,13 @@ void GUI::queue_make_listbox()
 	lbq.typeface(paint::font_info {"Calibri", 12});
 	lbq.scheme().item_height_ex = 8;
 	lbq.append_header("#", scale(30));
-	lbq.append_header("Website", scale(20 + !conf.col_site_text * 10) * conf.col_site_icon + scale(110) * conf.col_site_text);
-	lbq.append_header("Media title", scale(584));
-	lbq.append_header("Status", scale(116));
-	lbq.append_header("Format", scale(130));
-	lbq.append_header("Format note", scale(150));
-	lbq.append_header("Ext", scale(60));
-	lbq.append_header("Filesize", scale(100));
+	lbq.append_header(i18n::tr("Website"), scale(20 + !conf.col_site_text * 10) * conf.col_site_icon + scale(110) * conf.col_site_text);
+	lbq.append_header(i18n::tr("Media title"), scale(584));
+	lbq.append_header(i18n::tr("Status"), scale(116));
+	lbq.append_header(i18n::tr("Format"), scale(130));
+	lbq.append_header(i18n::tr("Format note"), scale(150));
+	lbq.append_header(i18n::tr("Ext"), scale(60));
+	lbq.append_header(i18n::tr("Filesize"), scale(100));
 	lbq.column_movable(false);
 	lbq.column_resizable(false);
 	lbq.column_at(4).visible(conf.col_format);
@@ -30,6 +30,8 @@ void GUI::queue_make_listbox()
 	lbq.column_at(7).visible(conf.col_fsize);
 	lbq.column_at(0).text_align(align::center);
 	lbq.at(0).inline_factory(1, pat::make_factory<inline_widget>());
+	lbq.at(0).inline_factory(2, pat::make_factory<translated_inline_widget>());
+	lbq.at(0).inline_factory(3, pat::make_factory<translated_inline_widget>());
 
 	lbq.events().resized([this](const arg_resized &arg) { adjust_lbq_headers(); });
 
@@ -341,9 +343,7 @@ std::wstring GUI::queue_pop_menu(int x, int y)
 			if(vidsel_item.m)
 				vidsel_item.m = &m;
 
-			auto verb {btndl.caption().substr(0, 5)};
-			if(verb.back() == ' ')
-				verb.pop_back();
+			std::string verb {bottom.started ? "Stop" : "Start"};
 			if(item.text(3).find("stopped") != -1)
 				verb = "Resume";
 			m.append(verb + " " + item_name, [&, url, this](menu::item_proxy)
@@ -439,6 +439,8 @@ std::wstring GUI::queue_pop_menu(int x, int y)
 						lbq.auto_draw(false);
 						auto cat {lbq.append(item.text(2))};
 						cat.inline_factory(1, nana::pat::make_factory<inline_widget>());
+						cat.inline_factory(2, nana::pat::make_factory<translated_inline_widget>());
+						cat.inline_factory(3, nana::pat::make_factory<translated_inline_widget>());
 						std::wstring first_url_in_list;
 						for(unsigned n {0}; n < count; n++)
 						{

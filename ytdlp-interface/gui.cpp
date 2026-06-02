@@ -265,7 +265,7 @@ bool GUI::process_queue_item(std::wstring url)
 		if(tbpipe.current() == url)
 		{
 			tbpipe.clear();
-			if(tbpipe_overlay.visible() && btnq.caption().find("queue") != -1)
+			if(tbpipe_overlay.visible() && btnq.caption() == i18n::tr("Show queue"))
 				tbpipe.show(url);
 		}
 		else tbpipe.clear(url);
@@ -1876,7 +1876,7 @@ void GUI::get_releases(nana::window parent_for_msgbox)
 	thr_releases = std::thread {[parent_for_msgbox, this]
 	{
 		using json = nlohmann::json;
-		auto jtext {util::get_inet_res("https://api.github.com/repos/ErrorFlynn/ytdlp-interface/releases", &inet_error)};
+		auto jtext {util::get_inet_res("https://api.github.com/repos/Terence0816/ytdlp-interface-zh-TW/releases", &inet_error)};
 		if(!jtext.empty())
 		{
 			try { releases = json::parse(jtext); }
@@ -2431,7 +2431,7 @@ void GUI::adjust_lbq_headers()
 		if(conf.col_site_icon || conf.col_site_text)
 		{
 			lbq.column_at(1).width(one);
-			lbq.column_at(1).text(conf.col_site_text ? "Website" : "");
+			lbq.column_at(1).text(conf.col_site_text ? i18n::tr("Website") : "");
 			if(!lbq.column_at(1).visible())
 				lbq.column_at(1).visible(true);
 		}

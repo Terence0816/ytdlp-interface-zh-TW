@@ -95,6 +95,7 @@
       <LanguageStandard>stdcpp20</LanguageStandard>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
       <AdditionalIncludeDirectories>$(SolutionDir)..\nana\include;$(SolutionDir)..\bit7z\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
@@ -115,7 +116,7 @@
       <LanguageStandard>stdcpp23</LanguageStandard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
-      <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>/utf-8 /bigobj %(AdditionalOptions)</AdditionalOptions>
       <AdditionalIncludeDirectories>$(SolutionDir)..\nana\include;$(SolutionDir)..\bit7z\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
@@ -144,6 +145,7 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <DebugInformationFormat>None</DebugInformationFormat>
       <Optimization>MinSpace</Optimization>
+      <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
       <AdditionalIncludeDirectories>$(SolutionDir)..\nana\include;$(SolutionDir)..\bit7z\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
@@ -179,6 +181,7 @@
       <WholeProgramOptimization>true</WholeProgramOptimization>
       <ExceptionHandling>Sync</ExceptionHandling>
       <Optimization>MinSpace</Optimization>
+      <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
       <AdditionalIncludeDirectories>$(SolutionDir)..\nana\include;$(SolutionDir)..\bit7z\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
@@ -216,6 +219,7 @@
     <ClCompile Include="gui_bottoms.cpp" />
     <ClCompile Include="gui_make.cpp" />
     <ClCompile Include="hsl_picker.cpp" />
+    <ClCompile Include="i18n.cpp" />
     <ClCompile Include="log.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="outbox.cpp" />
@@ -232,6 +236,7 @@
     <ClInclude Include="gui.hpp" />
     <ClInclude Include="hsl_picker.hpp" />
     <ClInclude Include="icons.hpp" />
+    <ClInclude Include="i18n.hpp" />
     <ClInclude Include="json.hpp" />
     <ClInclude Include="log.hpp" />
     <ClInclude Include="msgbox.hpp" />

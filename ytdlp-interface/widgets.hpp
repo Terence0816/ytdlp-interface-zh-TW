@@ -24,6 +24,7 @@
 #include "progress_ex.hpp"
 #include "icons.hpp"
 #include "types.hpp"
+#include "i18n.hpp"
 
 #pragma warning(disable : 4267)
 #ifdef small
@@ -91,12 +92,18 @@ namespace widgets
 	public:
 
 		Label() : label() {}
+		using nana::label::caption;
 
 		Label(nana::window parent, std::string_view text, bool dpi_adjust = false)
 		{
 			create(parent, text, dpi_adjust);
 		}
 
+		nana::widget &caption(std::string_view text) { return nana::label::caption(i18n::tr(text)); }
+		nana::widget &caption(const char *text) { return caption(std::string_view {text ? text : ""}); }
+		nana::widget &caption(const std::string &text) { return nana::label::caption(i18n::tr(text)); }
+		nana::widget &caption(const std::wstring &text) { return nana::label::caption(i18n::trw(text)); }
+		nana::widget &caption(std::wstring_view text) { return nana::label::caption(i18n::trw(text)); }
 		void create(nana::window parent, std::string_view text, bool dpi_adjust = false);
 	};
 
@@ -108,12 +115,18 @@ namespace widgets
 	public:
 
 		Text() : label() {}
+		using nana::label::caption;
 
 		Text(nana::window parent, std::string_view text = "", bool dpi_adjust = false) : label {parent, text}
 		{
 			create(parent, text, dpi_adjust);
 		}
 
+		nana::widget &caption(std::string_view text) { return nana::label::caption(i18n::tr(text)); }
+		nana::widget &caption(const char *text) { return caption(std::string_view {text ? text : ""}); }
+		nana::widget &caption(const std::string &text) { return nana::label::caption(i18n::tr(text)); }
+		nana::widget &caption(const std::wstring &text) { return nana::label::caption(i18n::trw(text)); }
+		nana::widget &caption(std::wstring_view text) { return nana::label::caption(i18n::trw(text)); }
 		void create(nana::window parent, std::string_view text = "", bool dpi_adjust = false);
 
 		void error_mode(bool enable)
@@ -171,12 +184,16 @@ namespace widgets
 	public:
 
 		cbox() : checkbox() {}
+		using nana::checkbox::caption;
 
 		cbox(nana::window parent, std::string_view text)
 		{
 			create(parent, text);
 		}
 
+		nana::widget &caption(std::string_view text) { return nana::checkbox::caption(i18n::tr(text)); }
+		nana::widget &caption(const char *text) { return caption(std::string_view {text ? text : ""}); }
+		nana::widget &caption(const std::string &text) { return nana::checkbox::caption(i18n::tr(text)); }
 		void create(nana::window parent, std::string_view text);
 		void refresh_theme();
 	};
@@ -195,12 +212,16 @@ namespace widgets
 	public:
 
 		Button() : button() {}
+		using nana::button::caption;
 
 		Button(nana::window parent, std::string_view text = "", bool small = false)
 		{
 			create(parent, text, small);
 		}
 
+		nana::widget &caption(std::string_view text) { return nana::button::caption(i18n::tr(text)); }
+		nana::widget &caption(const char *text) { return caption(std::string_view {text ? text : ""}); }
+		nana::widget &caption(const std::string &text) { return nana::button::caption(i18n::tr(text)); }
 		void create(nana::window parent, std::string_view text = "", bool small = false);
 		void refresh_theme();
 		void image(const void *data, unsigned size);
@@ -276,6 +297,7 @@ namespace widgets
 	public:
 
 		Group() : group() {}
+		using nana::group::caption;
 
 		Group(nana::window parent, std::string title)
 		{
@@ -284,6 +306,8 @@ namespace widgets
 
 		void create(nana::window parent, std::string title = "");
 		nana::widget &caption(std::string utf8);
+		nana::widget &caption(const char *utf8) { return caption(std::string {utf8 ? utf8 : ""}); }
+		nana::widget &caption(std::string_view utf8) { return caption(std::string {utf8}); }
 		std::string caption();
 		void refresh_theme();
 	};
@@ -364,12 +388,18 @@ namespace widgets
 	public:
 
 		Title() : label() {};
+		using nana::label::caption;
 
 		Title(nana::window parent, std::string_view text = "")
 		{
 			create(parent, text);
 		}
 
+		nana::widget &caption(std::string_view text) { return nana::label::caption(i18n::tr(text)); }
+		nana::widget &caption(const char *text) { return caption(std::string_view {text ? text : ""}); }
+		nana::widget &caption(const std::string &text) { return nana::label::caption(i18n::tr(text)); }
+		nana::widget &caption(const std::wstring &text) { return nana::label::caption(i18n::trw(text)); }
+		nana::widget &caption(std::wstring_view text) { return nana::label::caption(i18n::trw(text)); }
 		void create(nana::window parent, std::string_view text = "");
 		void refresh_theme();
 	};
@@ -388,12 +418,18 @@ namespace widgets
 	public:
 
 		Overlay() : label() {}
+		using nana::label::caption;
 
 		Overlay(nana::window parent, nana::widget *outbox, std::string_view text = "", bool visible = true)
 		{
 			create(parent, outbox, text, visible);
 		}
 
+		nana::widget &caption(std::string_view text) { return nana::label::caption(i18n::tr(text)); }
+		nana::widget &caption(const char *text) { return caption(std::string_view {text ? text : ""}); }
+		nana::widget &caption(const std::string &text) { return nana::label::caption(i18n::tr(text)); }
+		nana::widget &caption(const std::wstring &text) { return nana::label::caption(i18n::trw(text)); }
+		nana::widget &caption(std::wstring_view text) { return nana::label::caption(i18n::trw(text)); }
 		void create(nana::window parent, nana::widget *outbox, std::string_view text = "", bool visible = true);
 	};
 
@@ -682,12 +718,18 @@ namespace widgets
 	public:
 
 		Infobox() : label() {};
+		using nana::label::caption;
 
 		Infobox(nana::window parent, bool visible = true)
 		{
 			create(parent, visible);
 		}
 
+		nana::widget &caption(std::string_view text) { return nana::label::caption(i18n::tr(text)); }
+		nana::widget &caption(const char *text) { return caption(std::string_view {text ? text : ""}); }
+		nana::widget &caption(const std::string &text) { return nana::label::caption(i18n::tr(text)); }
+		nana::widget &caption(const std::wstring &text) { return nana::label::caption(i18n::trw(text)); }
+		nana::widget &caption(std::wstring_view text) { return nana::label::caption(i18n::trw(text)); }
 		void create(nana::window parent, bool visible = true);
 		void refresh_theme();
 	};
@@ -781,4 +823,20 @@ class inline_widget : public nana::listbox::inline_notifier_interface
 	widgets::Listbox *lb {nullptr};
 	int conf {3};
 	HWND hwnd {nullptr};
+};
+
+
+class translated_inline_widget : public nana::listbox::inline_notifier_interface
+{
+	virtual void create(nana::window wd) override;
+	virtual void activate(inline_indicator &ind, index_type pos) override;
+	void resize(const nana::size &sz) override;
+	virtual void set(const value_type &value) override;
+	void notify_status(status_type, bool) override {}
+	bool whether_to_draw() const override { return false; }
+
+	inline_indicator *indicator_ {nullptr};
+	index_type pos_;
+	nana::label text;
+	void clip_text(const std::string &str);
 };

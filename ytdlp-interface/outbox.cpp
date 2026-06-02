@@ -251,7 +251,7 @@ void GUI::Outbox::append(std::wstring url, std::string text)
 	{
 		if(std::this_thread::get_id() == main_thread_id)
 		{
-			if(!visible() && url == pgui->qurl && pgui->btnq.caption().find("queue") != -1)
+			if(!visible() && url == pgui->qurl && pgui->btnq.caption() == i18n::tr("Show queue"))
 			{
 				widget::show();
 				pgui->overlay.hide();

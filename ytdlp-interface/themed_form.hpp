@@ -1,6 +1,7 @@
 #pragma once
 #include <nana/gui.hpp>
 #include "subclass.hpp"
+#include "i18n.hpp"
 
 class themed_form : public nana::form
 {
@@ -10,6 +11,10 @@ public:
 				nana::window owner = nullptr, 
 				nana::rectangle r = {}, 
 				const nana::appearance& appear = {});
+	using nana::form::caption;
+	nana::widget &caption(std::string_view text) { return nana::form::caption(i18n::tr(text)); }
+	nana::widget &caption(const char *text) { return caption(std::string_view {text ? text : ""}); }
+	nana::widget &caption(const std::string &text) { return nana::form::caption(i18n::tr(text)); }
 	void dark_theme(bool enable);
 	bool dark_theme() { return use_dark_mode; }
 	void system_theme(bool enable);

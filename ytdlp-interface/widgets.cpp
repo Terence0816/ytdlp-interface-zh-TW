@@ -178,18 +178,19 @@ void Separator::create(nana::window parent, std::string title)
 	plc = std::make_unique<place>(*this);
 	sep1.create(*this);
 	sep2.create(*this);
+	const auto translated_title {i18n::tr(title)};
 	paint::graphics g {{100, 100}};
 	g.typeface(paint::font_info {"Verdana", 8, {700}});
-	auto tes {g.text_extent_size(title)};
+	auto tes {g.text_extent_size(translated_title)};
 	auto padding {util::scale(7)};
-	if(title.empty())
+	if(translated_title.empty())
 		plc->div("vert <sep1> <> <sep2>");
 	else plc->div("<weight=" + std::to_string(tes.width + padding) + "px> <vert <<weight=1px><sep1>> <> <sep2>>");
 	plc->field("sep1") << sep1;
 	plc->field("sep2") << sep2;
 	events().expose([this] { refresh_theme(); });
-	if(!title.empty())
-		drawing {parent}.draw([tes, padding, title, this](paint::graphics &g)
+	if(!translated_title.empty())
+		drawing {parent}.draw([tes, padding, translated_title, this](paint::graphics &g)
 		{
 			auto p {pos()};
 			if(p.y > 0)
@@ -210,7 +211,7 @@ void Separator::create(nana::window parent, std::string title)
 				p.x += 2;
 				p.y -= h / 2;
 				g.typeface(paint::font_info {"Verdana", 8, {700}});
-				g.string(p, title, theme::sep_bg.blend(theme::is_dark() ? colors::white : colors::black, .2));
+				g.string(p, translated_title, theme::sep_bg.blend(theme::is_dark() ? colors::white : colors::black, .2));
 			}
 		});
 }
@@ -243,10 +244,10 @@ void path_label::update_caption()
 {
 	const std::wstring wstr {is_path ? std::get<fs::path*>(v)->wstring() : *std::get<std::wstring*>(v)};
 	if(!is_path && wstr.empty())
-		caption("Press Ctrl+V or click here to paste and add media link");
+		caption(i18n::trw(L"Press Ctrl+V or click here to paste and add media link"));
 	else if(!size().empty())
 	{
-		caption(wstr);
+		caption(i18n::trw(wstr));
 		int offset {0};
 		while(measure(1234).width > size().width)
 		{
@@ -627,7 +628,8 @@ nana::widget &Group::caption(std::string utf8)
 {
 	title = utf8;
 	widget::typeface(nana::paint::font_info{}); // workaround for bug: group.hpp declares undefined method `typeface`
-	return group::caption("<bold color=" + theme::gpfg + " size=11 font=\"Tahoma\"> " + utf8 + " </>");
+	const auto translated {i18n::tr(utf8)};
+	return group::caption("<bold color=" + theme::gpfg + " size=11 font=\"Tahoma\"> " + translated + " </>");
 }
 
 
@@ -651,6 +653,7 @@ void Combox::my_renderer::item(widget_reference wdg, graph_reference g, const na
 	using namespace nana;
 	const unsigned margin {8};
 	const auto &img {ii->image()};
+	const auto text_translated {i18n::tr(ii->text())};
 	const color fg_normal {theme::lbfg},
 	            bg_normal {theme::is_dark() ? theme::fmbg.blend(colors::white, .08) : theme::fmbg},
 	            bg_hilighted {theme::lbselbg},
@@ -666,7 +669,7 @@ void Combox::my_renderer::item(widget_reference wdg, graph_reference g, const na
 		paint::draw {g}.corner(r, 1);
 		g.gradual_rectangle(rectangle {r}.pare_off(2), bg_hilighted, bg_hilighted.blend(clr_blend, .25), true);
 	}
-	auto size {g.text_extent_size(ii->text())};
+	auto size {g.text_extent_size(text_translated)};
 	auto pos {r.position()};
 	pos.x += margin;
 	if(!img.empty())
@@ -676,7 +679,7 @@ void Combox::my_renderer::item(widget_reference wdg, graph_reference g, const na
 		pos.x += 16 + margin;
 	}
 	pos.y += static_cast<int>(r.height / 2 - size.height / 2);
-	g.string(pos, ii->text(), fg_normal);
+	g.string(pos, text_translated, fg_normal);
 }
 
 
@@ -810,9 +813,8 @@ void Slider::refresh_theme()
 
 void Overlay::create(nana::window parent, nana::widget *outbox, std::string_view text, bool visible)
 {
-	if(text.empty())
-		caption("output from yt-dlp.exe appears here\n\nright-click for options\n\ndouble-click to show queue");
 	label::create(parent, visible);
+	caption(text.empty() ? std::string {"output from yt-dlp.exe appears here\n\nright-click for options\n\ndouble-click to show queue"} : std::string {text});
 	fgcolor(theme::overlay_fg);
 	text_align(nana::align::center, nana::align_v::center);
 	typeface(nana::paint::font_info {"Segoe UI", 15, {700}});
@@ -892,11 +894,12 @@ void Menu::menu_renderer::item(graph_reference g, const nana::rectangle &r, cons
 
 void Menu::menu_renderer::item_text(graph_reference g, const nana::point &pos, const std::string &text, unsigned pixels, const attr &attr)
 {
-	auto size {g.text_extent_size(text)};
+	const auto translated {i18n::tr(text)};
+	auto size {g.text_extent_size(translated)};
 	g.typeface(nana::paint::font_info {"Segoe UI", 9});
 	if(theme::is_dark())
-		g.string(pos, text, attr.enabled ? nana::colors::white : nana::color {"#aaa"});
-	else g.string(pos, text, attr.enabled ? nana::colors::black : nana::colors::gray_border);
+		g.string(pos, translated, attr.enabled ? nana::colors::white : nana::color {"#aaa"});
+	else g.string(pos, translated, attr.enabled ? nana::colors::black : nana::colors::gray_border);
 }
 
 
@@ -1259,13 +1262,14 @@ void conf_tree::ctree_renderer::begin_paint(nana::widget &wdg)
 void conf_tree::ctree_renderer::text(graph_reference graph, const compset_interface *compset) const
 {
 	auto iattr {compset->item_attribute()};
+	const auto translated {i18n::tr(iattr.text)};
 	comp_attribute_t cattr;
 	compset->comp_attribute(component::text, cattr);
 	auto tf {graph.typeface()};
 	if(iattr.has_children)
 		graph.typeface({tf.name(), tf.size(), {800}});
 
-	auto tsize {graph.text_extent_size(iattr.text)};
+	auto tsize {graph.text_extent_size(translated)};
 	auto gsize {cattr.area.dimension()};
 	nana::point tpos {cattr.area.position()};
 	if(tsize.height < gsize.height)
@@ -1273,10 +1277,10 @@ void conf_tree::ctree_renderer::text(graph_reference graph, const compset_interf
 
 	if(iattr.has_children)
 	{
-		graph.string(tpos, iattr.text, theme::tree_parent_node);
+		graph.string(tpos, translated, theme::tree_parent_node);
 		graph.typeface(tf);
 	}
-	else graph.string(tpos, iattr.text, theme::Label_fg);
+	else graph.string(tpos, translated, theme::Label_fg);
 }
 
 
@@ -1345,7 +1349,7 @@ void conf_tree::add(std::string item_text, std::string field_name)
 {
 	if(plc)
 	{
-		insert(field_name, item_text).value(field_name);
+		insert(field_name, i18n::tr(item_text)).value(field_name);
 	}
 }
 
@@ -1551,10 +1555,10 @@ void inline_widget::set(const value_type &value)
 		else
 		{
 			if(value.size() < 4)
-				text.caption(value);
+				text.caption(i18n::tr(value));
 			else
 			{
-				clip_text(value);
+				clip_text(i18n::tr(value));
 				auto pimg {lb->at(pos_).value<lbqval_t>().pimg};
 				if(pimg) pic.load(*pimg);
 			}
@@ -1595,9 +1599,56 @@ void inline_widget::clip_text(const std::string &str)
 }
 
 
+void translated_inline_widget::create(nana::window wd)
+{
+	text.create(wd);
+	text.transparent(true);
+	text.text_align(nana::align::left, nana::align_v::center);
+	text.typeface(nana::paint::font_info {"Calibri", 12});
+	text.events().click([this] { indicator_->selected(pos_); });
+	text.events().mouse_move([this] { indicator_->hovered(pos_); });
+}
+
+
+void translated_inline_widget::activate(inline_indicator &ind, index_type pos)
+{
+	indicator_ = &ind;
+	pos_ = pos;
+}
+
+
+void translated_inline_widget::resize(const nana::size &sz)
+{
+	text.move({4, 0, sz.width > 4 ? sz.width - 4 : sz.width, sz.height});
+}
+
+
+void translated_inline_widget::set(const value_type &value)
+{
+	clip_text(i18n::tr(value));
+}
+
+
+void translated_inline_widget::clip_text(const std::string &str)
+{
+	const auto max_pixels {text.size().width};
+	int offset {0};
+	text.caption(str);
+	const auto strsize {str.size()};
+	while(text.measure(1234).width > max_pixels)
+	{
+		offset += 1;
+		if(strsize - offset < 4)
+			break;
+		text.caption(str.substr(0, strsize - offset) + "...");
+	}
+}
+
+
 void thumb_label::create(nana::window parent, std::string_view text, bool visible)
 {
 	label::create(parent, visible);
+	caption(std::string {text});
 	text_align(nana::align::center, nana::align_v::center);
 	typeface(nana::paint::font_info {"Segoe UI", 14, {700}});
 	events().expose([this] { refresh_theme(); });

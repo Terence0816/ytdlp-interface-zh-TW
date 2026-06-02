@@ -72,8 +72,8 @@ void GUI::fm_settings()
 	};
 
 	widgets::conf_tree tree {fm, &fm.get_place(), page_callback};
-	tree.add("yt-dlp", "ytdlp");
-	tree.add("SponsorBlock", "sblock");
+	tree.add("下載器", "ytdlp");
+	tree.add("贊助片段", "sblock");
 	tree.add("Queuing", "queuing");
 	tree.add("Interface", "gui");
 	tree.add("Updater", "updater");
@@ -90,7 +90,7 @@ void GUI::fm_settings()
 	fm["about"] << about.actual_handle();
 
 	about.div(R"(vert
-		<pnl_header weight=35> <weight=10> <l_about_ver weight=50> <weight=15>
+		<pnl_header weight=35> <weight=10> <l_about_ver weight=82> <weight=15>
 		<about_sep1 weight=3> <weight=20> <libtitle weight=28> <weight=13>
 		<weight=28 <l_nana> <weight=20> <l_nana_ver>>
 		<weight=28 <l_json> <weight=20> <l_json_ver>>
@@ -109,7 +109,8 @@ void GUI::fm_settings()
 	)");
 
 	std::string vertext {ver_tag + " (" + (X64 ? "64-bit)" : "32-bit)") +
-		"\n<color=0x url=\"https://github.com/ErrorFlynn/ytdlp-interface\">https://github.com/ErrorFlynn/ytdlp-interface</>"};
+		"\n<color=0x url=\"https://github.com/ErrorFlynn/ytdlp-interface\">https://github.com/ErrorFlynn/ytdlp-interface</>" +
+		"\n繁體中文版本：<color=0x url=\"https://github.com/Terence0816/ytdlp-interface-zh-TW\">https://github.com/Terence0816/ytdlp-interface-zh-TW</>"};
 	std::string about_text {""};
 
 	about_label l_about_ver {about, ""};
@@ -419,7 +420,7 @@ void GUI::fm_settings()
 	tb_cookies.typeface(nana::paint::font_info {"Tahoma", 10});
 	tb_cookies.multi_lines(false);
 
-	std::string sblock_text {"<color=0x url=\"https://sponsor.ajay.app\">SponsorBlock</> lets users mark or remove segments in YouTube videos"};
+	std::string sblock_text {"<color=0x url=\"https://sponsor.ajay.app\">SponsorBlock</> 可讓使用者標記或移除 YouTube 影片中的片段"};
 	l_sblock.format(true);
 	l_sblock.tooltip("https://sponsor.ajay.app");
 	l_sblock.text_align(nana::align::center, nana::align_v::center);
@@ -435,8 +436,8 @@ void GUI::fm_settings()
 		lbremove.at(0).push_back(sblock_infos[key].first);
 		lbremove.at(0).back().value(key);
 	}
-	cb_mark.tooltip("yt-dlp will create chapters for the segments in these categories\n(this passes <bold>--sponsorblock-mark</> to yt-dlp)");
-	cb_remove.tooltip("yt-dlp will remove the segments in these categories\n(this passes <bold>--sponsorblock-remove</> to yt-dlp)");
+	cb_mark.tooltip("yt-dlp 會為這些分類的片段建立章節標記\n（這會把 <bold>--sponsorblock-mark</> 傳給 yt-dlp）");
+	cb_remove.tooltip("yt-dlp 會移除這些分類的片段\n（這會把 <bold>--sponsorblock-remove</> 傳給 yt-dlp）");
 
 	size_t hovitem_mark {nana::npos};
 	lbmark.events().mouse_move([&](const nana::arg_mouse &arg)
@@ -569,9 +570,7 @@ void GUI::fm_settings()
 		<weight=35 <><btn_save weight=100> <weight=20> <btn_load weight=100> <weight=20> <btn_delete weight=110> <weight=20> <btn_rename weight=110> <>>
 	)");
 
-	widgets::Label l_pinfo {presets, "<bold>Configuration presets</> are snapshots of the settings found in the first three categories "
-		"(yt-dlp, SponsorBlock, Queuing), as well as the ones in the \"Download options\" group in the main window. The \"Save\" button saves the current "
-		"settings to the selected preset, and the \"Load\" button loads the selected preset into the current settings."}, 
+	widgets::Label l_pinfo {presets, "<bold>設定預設集</> 會保存前三個分類（yt-dlp、SponsorBlock、佇列）以及主視窗「下載選項」群組中的設定快照。「儲存」按鈕會把目前設定存到選取的預設集，而「載入」按鈕則會把該預設集套用到目前設定。"},
 		l_add {presets, "Name for new preset:"};
 	widgets::Separator sep_presets {presets};
 	widgets::Listbox lb_presets {presets};
@@ -616,7 +615,7 @@ void GUI::fm_settings()
 	btn_save.enable(false);
 	btn_load.enable(false);
 	btn_delete.enable(false);
-	btn_add.tooltip("Create a new preset and save the current settings to it.");
+	btn_add.tooltip("建立新的預設集，並把目前設定存進去。");
 
 	presets["l_pinfo"] << l_pinfo;
 	presets["lb_presets"] << lb_presets;
@@ -1376,7 +1375,7 @@ formats, which it judges according to certain parameters. For example, the main 
 The four settings pictured above allow you to change what yt-dlp considers "the best" in each of those categories, at the same time reordering how the categories are prioritised. For example, if you
 select "1080" for the preferred resolution, then yt-dlp will consider 1080p to be the best resolution, instead of the highest available. With the preferences configured like in the above picture, yt-dlp will first identify all the video formats with 1080p resolution, then out of those, all with .mp4 extension, and out of those, all with the highest framerate, and so on until one format is chosen.
 
-Of course, this is all optional � you can select "none" for each of these settings to let yt-dlp use its default priorities. Also, the program only uses these settings when you don't request a specific format
+Of course, this is all optional - you can select "none" for each of these settings to let yt-dlp use its default priorities. Also, the program only uses these settings when you don't request a specific format
 (like <bold color=0x>-f 303+251</>, or <bold color=0x>-f ba</>).
 
 The program lets you manually select formats from a list, but it should be clear that you don't have to
@@ -1510,14 +1509,11 @@ void GUI::make_updater_page(themed_form &parent)
 	cb_chan_stable.radio(true);
 	cb_chan_nightly.radio(true);
 
-	cb_chan_stable.tooltip("\"Stable\" releases are well tested and have no major bugs,\n"
-		"but there's a relatively long time until one comes out.");
-	cb_chan_nightly.tooltip("\"Nightly\" releases come out every day around midnight\nUTC and contain the latest patches and changes. "
-		"This is\nthe recommended channel for regular users of yt-dlp.");
-	std::string selfonly_tip {"To update the program, an archive is downloaded from GitHub,\nwhich contains the following files:\n\n<bold>7z.dll\n"};
+	cb_chan_stable.tooltip("「穩定版」經過較完整測試，通常不會有重大問題，\n但新版推出的間隔也相對較久。");
+	cb_chan_nightly.tooltip("「每夜版」幾乎每天 UTC 午夜左右發佈，\n包含最新修補與變更。\n對經常使用 yt-dlp 的使用者來說，這通常是較建議的頻道。");
+	std::string selfonly_tip {"更新程式時，會從 GitHub 下載一個封存檔，內容包含下列檔案：\n\n<bold>7z.dll\n"};
 	selfonly_tip += win7 || !X64 ? "libwinpthread-1.dll\nqjs.exe\n" : "deno.exe\n";
-	selfonly_tip += "ffmpeg.exe\nffprobe.exe\nyt-dlp.exe\nytdlp-interface.exe</>\n\nCheck this option if you don't want your current "
-		"versions of\nyt-dlp and ffmpeg to be overwritten with those in the archive.";
+	selfonly_tip += "ffmpeg.exe\nffprobe.exe\nyt-dlp.exe\nytdlp-interface.exe</>\n\n如果你不想讓目前的 yt-dlp 與 ffmpeg 被封存檔內版本覆蓋，請勾選這個選項。";
 	cb_selfonly.tooltip(selfonly_tip);
 
 	if(!rgp_chan.size())
@@ -2062,7 +2058,7 @@ void GUI::updater_update_self(themed_form &parent)
 	static fs::path arc_path;
 	static bool btnffmpeg_state, btnytdlp_state;
 	arc_path = fs::temp_directory_path() / (X64 ? (win7 ? "ytdlp-interface_win7.7z" : "ytdlp-interface.7z") : (win7 ? "ytdlp-interface_x86_win7.7z" : "ytdlp-interface_x86.7z"));
-	if(btn_update.caption() == "Update")
+	if(btn_update.caption() == i18n::tr("Update"))
 	{
 		btn_update.caption("Cancel");
 		btnffmpeg_state = btn_update_ffmpeg.enabled();
@@ -2215,7 +2211,7 @@ void GUI::updater_update_self(themed_form &parent)
 
 void GUI::updater_update_deno(themed_form &parent)
 {
-	if(btn_update_deno.caption() != "Cancel")
+	if(btn_update_deno.caption() != i18n::tr("Cancel"))
 	{
 		btn_update_deno.caption("Cancel");
 		thr_updater_deno = std::thread {[this]
@@ -2294,7 +2290,7 @@ void GUI::updater_update_misc(bool ytdlp, fs::path target)
 
 	static auto btntext_ffmpeg {btn_update_ffmpeg.caption()}, btntext_ytdlp {btn_update_ytdlp.caption()};
 
-	if(btn->caption() != "Cancel")
+	if(btn->caption() != i18n::tr("Cancel"))
 	{
 		btnffmpeg_state = btn_update_ffmpeg.enabled();
 		btnytdlp_state = btn_update_ytdlp.enabled();
