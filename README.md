@@ -1,5 +1,8 @@
 # ytdlp-interface 繁體中文版
 
+[![Release](https://img.shields.io/github/v/release/Terence0816/ytdlp-interface-zh-TW?label=Release&color=2d7d46)](https://github.com/Terence0816/ytdlp-interface-zh-TW/releases)
+[![Downloads](https://img.shields.io/github/downloads/Terence0816/ytdlp-interface-zh-TW/total?label=Downloads&color=1f6feb)](https://github.com/Terence0816/ytdlp-interface-zh-TW/releases)
+
 這個專案是 [ErrorFlynn/ytdlp-interface](https://github.com/ErrorFlynn/ytdlp-interface) `v2.19.1` 的繁體中文化版本，主要目標是保留原本輕量、直覺的 Windows 下載介面，同時把常用操作、設定頁面與提示訊息整理成繁體中文。
 
 程式本體仍然是 `yt-dlp` 的圖形介面，所以只要網站是 `yt-dlp` 支援的來源，理論上都可以透過這個介面進行下載與整理。
